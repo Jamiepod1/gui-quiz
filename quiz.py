@@ -36,22 +36,26 @@ class Quiz():
 
 
     def start_quiz_console(self) -> None:
+        question_number = 1
         while self.questions != []:
-            if self.ask_question():
+            if self.ask_question(question_number):
                 self.score += 1
-                print("Correct!")
+                print("Correct!\n")
             else:
-                print("Incorrect")
+                print("Incorrect\n")
+            question_number += 1
 
         print(f"final score: {self.score}")
         self.score = 0
         self.get_questions()
 
 
-    def ask_question(self) -> bool:
+    def ask_question(self, question_number = "") -> bool:
         question = self.questions.pop(0)
         while True:
-            guess = input(f"{html.unescape(question["question"])}: T or F: ").strip().upper()
+            if question_number != "":
+                question_number = f"Q.{str(question_number)}: "
+            guess = input(f"{question_number}{html.unescape(question["question"])} (T or F): ").strip().upper()
             if guess == "T":
                 return question["answer"] == "True"
             elif guess == "F":
