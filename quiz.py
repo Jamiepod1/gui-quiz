@@ -1,4 +1,5 @@
 import requests
+import html
 
 
 class Quiz():
@@ -50,7 +51,7 @@ class Quiz():
     def ask_question(self) -> bool:
         question = self.questions.pop(0)
         while True:
-            guess = input(f"{question["question"]}: T or F: ").strip().upper()
+            guess = input(f"{html.unescape(question["question"])}: T or F: ").strip().upper()
             if guess == "T":
                 return question["answer"] == "True"
             elif guess == "F":
@@ -60,4 +61,5 @@ class Quiz():
 
 
 quiz = Quiz()
+print(quiz)
 quiz.start_quiz_console()
