@@ -21,7 +21,7 @@ class Quiz():
             return output
             
 
-    def get_questions(self):
+    def get_questions(self) -> None:
         try:
             response = requests.get(url=self.url)
             response.raise_for_status()
@@ -34,7 +34,7 @@ class Quiz():
                 self.questions.append(question)
 
 
-    def start_quiz_console(self):
+    def start_quiz_console(self) -> None:
         while self.questions != []:
             if self.ask_question():
                 self.score += 1
@@ -47,7 +47,7 @@ class Quiz():
         self.get_questions()
 
 
-    def ask_question(self):
+    def ask_question(self) -> bool:
         question = self.questions.pop(0)
         while True:
             guess = input(f"{question["question"]}: T or F: ").strip().upper()
