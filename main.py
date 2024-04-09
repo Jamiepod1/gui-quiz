@@ -1,5 +1,5 @@
 from quiz import Quiz
+from gui import QuizGui
 
-quiz = Quiz()
-print(quiz)
-quiz.start_quiz_console()
+quiz_gui = QuizGui()
+

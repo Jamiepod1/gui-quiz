@@ -61,9 +61,3 @@ class Quiz():
             elif guess == "F":
                 return question["answer"] == "False"
 
-            
-
-
-quiz = Quiz()
-print(quiz)
-quiz.start_quiz_console()
