@@ -3,7 +3,7 @@ import requests
 
 class Quiz():
 
-    
+
     def __init__(self) -> None:
         self.score = 0
         self.url = "https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=boolean"
@@ -33,10 +33,31 @@ class Quiz():
                 question = {"question": entry["question"], "answer": entry["correct_answer"]}
                 self.questions.append(question)
 
-        
+
+    def start_quiz_console(self):
+        while self.questions != []:
+            if self.ask_question():
+                self.score += 1
+                print("Correct!")
+            else:
+                print("Incorrect")
+
+        print(f"final score: {self.score}")
+        self.score = 0
+        self.get_questions()
+
+
     def ask_question(self):
-        pass
+        question = self.questions.pop(0)
+        while True:
+            guess = input(f"{question["question"]}: T or F: ").strip().upper()
+            if guess == "T":
+                return question["answer"] == "True"
+            elif guess == "F":
+                return question["answer"] == "False"
+
+            
 
 
 quiz = Quiz()
-print(quiz)
+quiz.start_quiz_console()
