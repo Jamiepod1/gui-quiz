@@ -31,23 +31,38 @@ class QuizGui():
         self.window.mainloop()
 
 
-    def display_question(self) -> None:
-        text = self.quiz.get_question()
+    def display_question(self, text) -> None:
         self.question_canvas.itemconfig(self.question_text, text=text)
 
 
     def is_answer_corect(self, answer) -> None:
-        print(answer)
-        print(self.quiz.get_answer())
-        if answer == self.quiz.get_answer():
-            self.quiz.score += 1
-            self.update_score()
+        if self.quiz.are_there_questions_left():
 
-        if self.quiz.next_question():
-            self.display_question()
+            if answer == self.quiz.get_answer():
+                self.quiz.score += 1
+                self.update_score()
+
+            if self.quiz.next_question():
+                question_text = self.quiz.get_question()
+                self.display_question(question_text)
+            else:
+                text = "Do you want to play another round?"
+                self.display_question(text)
+
         else:
-            self.window.quit()
+            if answer == "True":
+                self.reset_quiz()
+            else:
+                self.window.quit()
 
     
     def update_score(self) -> None:
         self.score_label.config(text=f"Score: {self.quiz.score}")
+
+
+    def reset_quiz(self) -> None:
+        self.quiz.get_questions()
+        self.quiz.score = 0
+        self.update_score()
+        question_text = self.quiz.get_question()
+        self.display_question(question_text)

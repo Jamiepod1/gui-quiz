@@ -43,8 +43,12 @@ class Quiz():
         return self.questions[0]["answer"]
     
 
-    def next_question(self) -> bool:
+    def next_question(self) -> None:
         self.questions.pop(0)
+        return self.are_there_questions_left()
+    
+
+    def are_there_questions_left(self) -> bool:
         return self.questions != []
         
 
