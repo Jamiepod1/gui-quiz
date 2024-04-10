@@ -18,9 +18,9 @@ class QuizGui():
         self.cross_button = Button(image=self.cross_image, highlightthickness=0, command=lambda: self.is_answer_corect("False"))
         self.cross_button.grid(column=1, row=2)
 
-        self.question_card_image = PhotoImage(file="images/question_background.png")
-        self.question_canvas = Canvas(width=400, height=400)
-        self.image_container = self.question_canvas.create_image(400, 400, image=self.question_card_image)
+        #self.question_card_image = PhotoImage(file="images/question_background.png")
+        self.question_canvas = Canvas(width=400, height=400, bg="white")
+        #self.image_container = self.question_canvas.create_image(400, 400, image=self.question_card_image)
         text = self.quiz.get_question()
         self.question_text = self.question_canvas.create_text(200, 200, text=text, font=("Ariel", 20, "bold"), fill="black", width = 360)
         self.question_canvas.grid(column=0, row=1, columnspan=2, pady=30)
@@ -41,20 +41,30 @@ class QuizGui():
             if answer == self.quiz.get_answer():
                 self.quiz.score += 1
                 self.update_score()
+                self.change_canvas_colour("green")
+                self.window.after(1000, self.next_question)
 
-            if self.quiz.next_question():
-                question_text = self.quiz.get_question()
-                self.display_question(question_text)
             else:
-                text = "Do you want to play another round?"
-                self.display_question(text)
-
+                self.change_canvas_colour("red")
+                self.window.after(1000, self.next_question)
         else:
             if answer == "True":
                 self.reset_quiz()
             else:
                 self.window.quit()
 
+
+    def next_question(self) -> None:
+        self.change_canvas_colour()
+        if self.quiz.are_there_questions_left():
+            self.quiz.next_question()
+
+            if self.quiz.are_there_questions_left():
+                question_text = self.quiz.get_question()
+                self.display_question(question_text)
+            else:
+                text = f"Final score: {self.quiz.score}\nDo you want to play another round?"
+                self.display_question(text)
     
     def update_score(self) -> None:
         self.score_label.config(text=f"Score: {self.quiz.score}")
@@ -66,3 +76,7 @@ class QuizGui():
         self.update_score()
         question_text = self.quiz.get_question()
         self.display_question(question_text)
+
+
+    def change_canvas_colour(self, colour="white") -> None:
+        self.question_canvas.config(bg=colour)

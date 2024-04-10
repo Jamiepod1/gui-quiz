@@ -26,7 +26,7 @@ class Quiz():
         try:
             response = requests.get(url=self.url)
             response.raise_for_status()
-        except HTTPError:
+        except requests.HTTPError:
             self.questions = []
         else:
             questions_json = response.json()["results"]
@@ -36,16 +36,22 @@ class Quiz():
 
 
     def get_question(self) -> str:
-        return html.unescape(self.questions[0]["question"])
+        if self.questions == []:
+            return "Error: Cannot reteive questions :("
+        else:
+            return html.unescape(self.questions[0]["question"])
     
 
     def get_answer(self) -> str:
-        return self.questions[0]["answer"]
+        if self.questions == []:
+            return "Error: Cannot reteive questions :()"
+        else:
+            return self.questions[0]["answer"]
     
 
     def next_question(self) -> None:
         self.questions.pop(0)
-        return self.are_there_questions_left()
+
     
 
     def are_there_questions_left(self) -> bool:
