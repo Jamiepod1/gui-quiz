@@ -35,6 +35,19 @@ class Quiz():
                 self.questions.append(question)
 
 
+    def get_question(self) -> str:
+        return html.unescape(self.questions[0]["question"])
+    
+
+    def get_answer(self) -> str:
+        return self.questions[0]["answer"]
+    
+
+    def next_question(self) -> bool:
+        self.questions.pop(0)
+        return self.questions != []
+        
+
     def start_quiz_console(self) -> None:
         question_number = 1
         while self.questions != []:
