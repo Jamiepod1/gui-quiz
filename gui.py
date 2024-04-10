@@ -1,8 +1,11 @@
 from tkinter import *
+from quiz import Quiz
+
 
 class QuizGui():
 
-    def __init__(self) -> None:
+    def __init__(self, quiz: Quiz) -> None:
+        self.quiz = quiz
         self.window = Tk()
         self.window.title("Quiz")
         self.window.config(bg="gray", padx=30, pady=30)

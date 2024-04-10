@@ -8,7 +8,8 @@ def main():
             quiz = Quiz()
             quiz.start_quiz_console()
         elif sys.argv[1] == "-g":
-            quiz_gui = QuizGui()
+            quiz = Quiz()
+            quiz_gui = QuizGui(quiz)
         else:
             print("Incorrect argument:\n'c' for console\n'g' for GUI")
     else:

@@ -38,7 +38,7 @@ class Quiz():
     def start_quiz_console(self) -> None:
         question_number = 1
         while self.questions != []:
-            if self.ask_question(question_number):
+            if self.ask_question_console(question_number):
                 self.score += 1
                 print("Correct!\n")
             else:
@@ -50,7 +50,7 @@ class Quiz():
         self.get_questions()
 
 
-    def ask_question(self, question_number = "") -> bool:
+    def ask_question_console(self, question_number = "") -> bool:
         question = self.questions.pop(0)
         while True:
             if question_number != "":
