@@ -7,9 +7,13 @@ class Quiz():
 
     def __init__(self) -> None:
         self.score = 0
+        self.queston_number_options = [num for num in range(5, 50)]
+        self.category_options = {"Any category": "", "General knowlegde": "9", "Film": "11", "Music": "12", "Science and nature": "17", "Computers": "18", "Mythology": "20", "Sports": "21", "Geography": "22", "Politics": "24"}
+        self.difficulty_options = ["Any difficulty", "Easy", "Medium", "Hard"]
         self.url = "https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=boolean"
         self.questions = []
         self.get_questions()
+
 
 
     def __str__(self) -> str:

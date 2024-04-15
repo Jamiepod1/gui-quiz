@@ -9,7 +9,7 @@ class QuizGui():
         self.options_menu_state = False
         self.window = Tk()
         self.window.title("Quiz")
-        self.window.geometry("468x730")
+        self.window.geometry("480x730")
         self.window.config(bg="gray", padx=30, pady=30)
 
         self.tick_image = PhotoImage(file="images/tick.png")
@@ -18,21 +18,40 @@ class QuizGui():
 
         self.cross_image = PhotoImage(file="images/cross.png")
         self.cross_button = Button(image=self.cross_image, highlightthickness=0, command=lambda: self.is_answer_corect("False"))
-        self.cross_button.grid(column=1, row=2)
+        self.cross_button.grid(column=2, row=2)
 
         #self.question_card_image = PhotoImage(file="images/question_background.png")
         self.question_canvas = Canvas(width=400, height=400, bg="white")
         #self.image_container = self.question_canvas.create_image(400, 400, image=self.question_card_image)
         text = self.quiz.get_question()
         self.question_text = self.question_canvas.create_text(200, 200, text=text, font=("Ariel", 20, "bold"), fill="black", width = 360)
-        self.question_canvas.grid(column=0, row=1, columnspan=2, pady=30)
+        self.question_canvas.grid(column=0, row=1, columnspan=3, sticky="nesw")
 
         self.score_label = Label(text="Score: 0", fg="white", bg="gray", font=("Ariel", 20, "bold"))
-        self.score_label.grid(column=1, row=0)
+        self.score_label.grid(column=2, row=0)
 
         self.settings_button = Button(text="Settings", highlightthickness=0, font=("Ariel", 20, "normal"), command=self.display_settings)
         self.settings_button.grid(column=0, row=0)
 
+        self.question_number = StringVar()
+        self.category = StringVar()
+        self.dificulty = StringVar()
+
+        self.question_number.set(self.quiz.queston_number_options[5])
+        self.category.set("Any category")
+        self.dificulty.set(self.quiz.difficulty_options[0])
+
+        self.question_number_dropdown = OptionMenu(self.window, self.question_number, *self.quiz.queston_number_options)
+
+        self.category_dropdown = OptionMenu(self.window, self.category, *[item for item in self.quiz.category_options.keys()])
+
+        self.dificulty_dropdown = OptionMenu(self.window, self.dificulty, *self.quiz.difficulty_options)
+        self.question_number_dropdown.grid(column=0, row=1, pady=20)
+        self.category_dropdown.grid(column=0, row=2)
+        self.dificulty_dropdown.grid(column=0, row=3, pady=20)
+        self.question_number_dropdown.grid_remove()
+        self.category_dropdown.grid_remove()
+        self.dificulty_dropdown.grid_remove()
         self.window.mainloop()
 
 
@@ -94,13 +113,19 @@ class QuizGui():
             self.score_label.grid()
             self.question_canvas.grid()
             self.settings_button.grid_configure(padx=0)
+            self.question_number_dropdown.grid_remove()
+            self.category_dropdown.grid_remove()
+            self.dificulty_dropdown.grid_remove()
             self.options_menu_state = False
         else:
             self.cross_button.grid_remove()
             self.tick_button.grid_remove()
             self.score_label.grid_remove()
             self.question_canvas.grid_remove()
-            self.settings_button.grid_configure(padx=48)
+            self.settings_button.grid_configure(padx=40)
+            self.question_number_dropdown.grid()
+            self.category_dropdown.grid()
+            self.dificulty_dropdown.grid()
             self.options_menu_state = True
 
         self.window.update_idletasks()
