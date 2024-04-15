@@ -6,8 +6,10 @@ class QuizGui():
 
     def __init__(self, quiz: Quiz) -> None:
         self.quiz = quiz
+        self.options_menu_state = False
         self.window = Tk()
         self.window.title("Quiz")
+        self.window.geometry("468x730")
         self.window.config(bg="gray", padx=30, pady=30)
 
         self.tick_image = PhotoImage(file="images/tick.png")
@@ -27,6 +29,9 @@ class QuizGui():
 
         self.score_label = Label(text="Score: 0", fg="white", bg="gray", font=("Ariel", 20, "bold"))
         self.score_label.grid(column=1, row=0)
+
+        self.settings_button = Button(text="Settings", highlightthickness=0, font=("Ariel", 20, "normal"), command=self.display_settings)
+        self.settings_button.grid(column=0, row=0)
 
         self.window.mainloop()
 
@@ -80,3 +85,22 @@ class QuizGui():
 
     def change_canvas_colour(self, colour="white") -> None:
         self.question_canvas.config(bg=colour)
+
+
+    def display_settings(self) -> None:
+        if self.options_menu_state:
+            self.cross_button.grid()
+            self.tick_button.grid()
+            self.score_label.grid()
+            self.question_canvas.grid()
+            self.settings_button.grid_configure(padx=0)
+            self.options_menu_state = False
+        else:
+            self.cross_button.grid_remove()
+            self.tick_button.grid_remove()
+            self.score_label.grid_remove()
+            self.question_canvas.grid_remove()
+            self.settings_button.grid_configure(padx=48)
+            self.options_menu_state = True
+
+        self.window.update_idletasks()
