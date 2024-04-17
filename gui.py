@@ -7,6 +7,7 @@ class QuizGui():
     def __init__(self, quiz: Quiz) -> None:
         self.quiz = quiz
         self.options_menu_state = False
+        self.quiz_in_progress = False
         self.window = Tk()
         self.window.title("Quiz")
         self.window.geometry("480x730")
@@ -23,7 +24,7 @@ class QuizGui():
         #self.question_card_image = PhotoImage(file="images/question_background.png")
         self.question_canvas = Canvas(width=400, height=400, bg="white")
         #self.image_container = self.question_canvas.create_image(400, 400, image=self.question_card_image)
-        text = self.quiz.get_question()
+        text = "Welcome to my quiz! You can change the settings before you play otherwise, click the tick to start!"
         self.question_text = self.question_canvas.create_text(200, 200, text=text, font=("Ariel", 20, "bold"), fill="black", width = 360)
         self.question_canvas.grid(column=0, row=1, columnspan=3, sticky="nesw")
 
@@ -39,13 +40,13 @@ class QuizGui():
 
         self.question_number.set(self.quiz.queston_number_options[5])
         self.category.set("Any category")
-        self.dificulty.set(self.quiz.difficulty_options[0])
+        self.dificulty.set("Any difficulty")
 
         self.question_number_dropdown = OptionMenu(self.window, self.question_number, *self.quiz.queston_number_options)
 
         self.category_dropdown = OptionMenu(self.window, self.category, *[item for item in self.quiz.category_options.keys()])
 
-        self.dificulty_dropdown = OptionMenu(self.window, self.dificulty, *self.quiz.difficulty_options)
+        self.dificulty_dropdown = OptionMenu(self.window, self.dificulty, *[item for item in self.quiz.difficulty_options.keys()])
         self.question_number_dropdown.grid(column=0, row=1, pady=20)
         self.category_dropdown.grid(column=0, row=2)
         self.dificulty_dropdown.grid(column=0, row=3, pady=20)
@@ -53,7 +54,6 @@ class QuizGui():
         self.category_dropdown.grid_remove()
         self.dificulty_dropdown.grid_remove()
         self.window.mainloop()
-
 
     def display_question(self, text) -> None:
         self.question_canvas.itemconfig(self.question_text, text=text)
@@ -95,7 +95,7 @@ class QuizGui():
 
 
     def reset_quiz(self) -> None:
-        self.quiz.get_questions()
+        self.quiz.get_questions(self.get_setting_values())
         self.quiz.score = 0
         self.update_score()
         question_text = self.quiz.get_question()
@@ -104,6 +104,13 @@ class QuizGui():
 
     def change_canvas_colour(self, colour="white") -> None:
         self.question_canvas.config(bg=colour)
+
+
+    def get_setting_values(self) -> tuple:
+        question_number = self.question_number.get()
+        category = self.quiz.category_options[self.category.get()]
+        difficulty = self.quiz.difficulty_options[self.dificulty.get()]
+        return (question_number, category, difficulty)
 
 
     def display_settings(self) -> None:
